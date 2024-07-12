@@ -14,7 +14,7 @@ for i in items:
         id=f'{i[0]}', title=f"{i[1]}",
         description=f"В наличии: {i[2]}\n"
                     f"Цена: {i[3]}",
-        thumbnail_url="https://cdn-icons-png.flaticon.com/512/3595/3595455.png",
+        thumbnail_url=f"https://daniil1235.github.io/bot-photo/images/{i[0]}.png",
         input_message_content=types.InputTextMessageContent(
             message_text=f"/add {i[0]}")))
 
