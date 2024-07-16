@@ -1,6 +1,7 @@
 from telebot import TeleBot, types
 import config
 import sqlite3
+import strings
 
 bot = TeleBot(config.BOT_TOKEN)
 
@@ -12,8 +13,8 @@ items = cursor.fetchall()
 for i in items:
     results.append(types.InlineQueryResultArticle(
         id=f'{i[0]}', title=f"{i[1]}",
-        description=f"В наличии: {i[2]}\n"
-                    f"Цена: {i[3]}",
+        description=f"{strings.amount} {i[2]}\n"
+                    f"{strings.price} {i[3]}",
         thumbnail_url=f"https://daniil1235.github.io/bot-photo/images/{i[0]}.png",
         input_message_content=types.InputTextMessageContent(
             message_text=f"/add {i[0]}")))
