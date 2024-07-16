@@ -42,6 +42,7 @@
 ***
 
 <h1 id="eng"> English </h1>
+## translated with[![](https://daniil1235.github.io/bot-photo/images/Google-Translate.png)](https://translate.google.com)
 
 ### photo for bot
 
