@@ -5,6 +5,7 @@ from main import bot, types
 
 
 def m(message: types.Message):
+    bot.delete_message(message.chat.id, message.id)
     text = message.text.replace("/add ", "")
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()

@@ -27,15 +27,24 @@ import cart
 import strings
 
 
+lang = ""
+
 @bot.message_handler(commands=["start"])
 def start(message: types.Message):
+    global lang
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT lang FROM users WHERE id = {message.chat.id}")
+    lang = cursor.fetchone()[0]
+
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     connection.commit()
     cursor.execute("""CREATE TABLE IF NOT EXISTS users 
                       (id TEXT, 
                       sum INTEGER,
-                      cart TEXT)""")
+                      cart TEXT,
+                      lang varchar(3))""")
 
     cursor.execute("""CREATE TABLE IF NOT EXISTS items 
                       (id INTEGER PRIMARY KEY, 
@@ -62,37 +71,70 @@ def start(message: types.Message):
         cursor = connection.cursor()
         if not exists:
             cursor.execute(f'INSERT INTO users(id, sum, cart) VALUES ("{message.from_user.id}", "0", "[]")')
+            markup = types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton("🇷🇺 русский", callback_data="rus"))
+            markup.add(types.InlineKeyboardButton("🇬🇧 english", callback_data="eng"))
+            bot.send_message(message.chat.id, "Выберете язык/select language", reply_markup=markup)
         connection.commit()
         cursor.close()
         connection.close()
     else:
         if not exists:
             bot.send_message(message.chat.id, strings.login_error)
-    bot.send_message(message.chat.id, strings.ok)
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def callbackk(call):
+    global lang
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT lang FROM users WHERE id = {message.chat.id}")
+    lang = cursor.fetchone()[0]
+
     callback.m(call)
 
 
 @bot.message_handler(commands=["add"])
 def addd(message):
+    global lang
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT lang FROM users WHERE id = {message.chat.id}")
+    lang = cursor.fetchone()[0]
+
     add.m(message)
 
 
 @bot.message_handler(commands=["shop"])
 def shopp(message):
+    global lang
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT lang FROM users WHERE id = {message.chat.id}")
+    lang = cursor.fetchone()[0]
+
     shop.m(message)
 
 
 @bot.message_handler(commands=["cart"])
 def cartt(message):
+    global lang
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT lang FROM users WHERE id = {message.chat.id}")
+    lang = cursor.fetchone()[0]
+
     cart.m(message)
 
 
 @bot.message_handler(commands=["sum"])
 def sum(message: types.Message):
+    global lang
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT lang FROM users WHERE id = {message.chat.id}")
+    lang = cursor.fetchone()[0]
+
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(f"SELECT sum FROM users WHERE id = {message.from_user.id}")
@@ -104,6 +146,12 @@ def sum(message: types.Message):
 
 @bot.inline_handler(func=lambda query: True)
 def query_text(query: types.InlineQuery):
+    global lang
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT lang FROM users WHERE id = {message.chat.id}")
+    lang = cursor.fetchone()[0]
+
     text = query.query
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
