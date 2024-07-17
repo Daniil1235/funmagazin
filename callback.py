@@ -43,7 +43,7 @@ def m(callback: types.CallbackQuery):
         bot.delete_message(callback.message.chat.id, callback.message.id)
         connection = sqlite3.connect("database.db")
         cursor = connection.cursor()
-        cursor.execute(f'UPDATE users SET cart = "[]" WHERE id= "{callback.message.chat.id}"')
+        cursor.execute(f'UPDATE users SET cart = "[]" WHERE id= "{callback.data.split(" ")[1]}"')
         bot.send_message(callback.message.chat.id, strings.cart_clear)
         connection.commit()
         cursor.close()
