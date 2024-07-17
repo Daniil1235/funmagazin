@@ -53,20 +53,3 @@ def m(callback: types.CallbackQuery):
         bot.send_message(callback.message.chat.id, strings.wait)
         bot.send_message(5645569833, callback.data.split(" ")[1] + strings.want)
 
-    elif callback.data == "eng":
-        connection = sqlite3.connect("database.db")
-        cursor = connection.cursor()
-        cursor.execute(f'UPDATE users SET lang = "eng" WHERE id= "{callback.message.chat.id}"')
-        bot.send_message(callback.message.chat.id, strings.ok)
-        connection.commit()
-        cursor.close()
-        connection.close()
-
-    elif callback.data == "rus":
-        connection = sqlite3.connect("database.db")
-        cursor = connection.cursor()
-        cursor.execute(f'UPDATE users SET lang = "rus" WHERE id= "{callback.message.chat.id}"')
-        bot.send_message(callback.message.chat.id, strings.ok)
-        connection.commit()
-        cursor.close()
-        connection.close()
