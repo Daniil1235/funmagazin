@@ -41,8 +41,7 @@ def start(message: types.Message):
                       (id INTEGER PRIMARY KEY, 
                       name VARCHAR(30), 
                       amount INTEGER, 
-                      price VARCHAR(10), 
-                      photo TEXT)""")
+                      price VARCHAR(10))""")
 
     connection.commit()
     cursor.execute("SELECT * FROM users")
@@ -50,7 +49,7 @@ def start(message: types.Message):
     exists = False
     for i in users:
         pass
-        if i[1] == str(message.from_user.id):
+        if i[0] == str(message.from_user.id):
             exists = True
 
     connection.commit()
@@ -68,7 +67,8 @@ def start(message: types.Message):
     else:
         if not exists:
             bot.send_message(message.chat.id, strings.login_error)
-    bot.send_message(message.chat.id, strings.ok)
+        else:
+            bot.send_message(message.chat.id, strings.ok)
 
 
 @bot.callback_query_handler(func=lambda call: True)
