@@ -61,7 +61,7 @@ git clone https://github.com/Daniil1235/bot-photo.git
 4. create a ref. link, to do this, open the bot profile, click *copy link*:
 [![](https://daniil1235.github.io/bot-photo/images/0.png)](https://daniil1235.github.io/bot-photo/images/0.png)
 now paste it into the browser, adding **?start=123488** to the end and follow it
-5. click start, and select the desired language. change products and the account in the database.
+5. click start, and select the desired language (not work). change products and the account in the database.
 
 ***
 by the way, the token in the commits is invalid.
@@ -91,7 +91,7 @@ git clone https://github.com/Daniil1235/bot-photo.git
 3. создать реф. ссылку, для этого открыть профиль бота, нажмите *копировать ссылку*:  
 [![](https://daniil1235.github.io/bot-photo/images/0.png)](https://daniil1235.github.io/bot-photo/images/0.png)  
 теперь вставьте её в браузер, добавив в конец **?start=123488** и перейдите по ней
-4. нажмите старт, и выберете нужный язык. изменяйте товары и счёт в базе данных.
+4. нажмите старт, и выберете нужный язык(не работает). изменяйте товары и счёт в базе данных.
 
 ***
 кстати токен в коммитах недействителен.
