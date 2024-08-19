@@ -1,10 +1,12 @@
 import sqlite3
+
 import strings
 from main import bot, types
 
 
 def m(callback: types.CallbackQuery):
     if callback.data == "clear":
+        bot.delete_message(callback.message.chat.id, callback.message.message_id)
         connection = sqlite3.connect("database.db")
         cursor = connection.cursor()
         cursor.execute(f'UPDATE users SET cart = "[]" WHERE id= "{callback.message.chat.id}"')
@@ -53,3 +55,36 @@ def m(callback: types.CallbackQuery):
         bot.send_message(callback.message.chat.id, strings.wait)
         bot.send_message(5645569833, callback.data.split(" ")[1] + strings.want)
 
+    elif "addcart" in callback.data:
+        bot.delete_message(callback.message.chat.id, callback.message.message_id)
+        text = callback.data.split(" ")[1]
+        connection = sqlite3.connect('database.db')
+        cursor = connection.cursor()
+        cursor.execute(f"SELECT cart FROM users WHERE id={callback.message.chat.id}")
+        cart = eval(cursor.fetchone()[0])
+        try:
+            cursor.execute(f"SELECT name FROM items WHERE id={text}")
+            name = cursor.fetchone()[0]
+            cart.append(name)
+            cursor.execute(f"SELECT sum FROM users WHERE id={callback.message.chat.id}")
+            sum = cursor.fetchone()[0]
+            cursor.execute(f"SELECT price FROM items WHERE id={text}")
+            price = int(cursor.fetchone()[0])
+            if sum >= price:
+                cursor.execute(f'UPDATE users SET cart="{cart}" WHERE id="{callback.message.chat.id}"')
+                bot.send_message(callback.message.chat.id, name + strings.add_success)
+                sum -= price
+                cursor.execute(f'UPDATE users SET sum="{sum}" WHERE id="{callback.message.chat.id}"')
+            else:
+                bot.send_message(callback.message.chat.id, strings.money_error)
+        except KeyboardInterrupt:
+            bot.send_message(callback.message.chat.id, strings.add_error)
+            return
+
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+
+    elif callback.data == "delmsg":
+        bot.delete_message(callback.message.chat.id, callback.message.message_id)

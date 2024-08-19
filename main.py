@@ -15,9 +15,9 @@ for i in items:
         id=f'{i[0]}', title=f"{i[1]}",
         description=f"{strings.amount} {i[2]}\n"
                     f"{strings.price} {i[3]}",
-        thumbnail_url=f"https://daniil1235.github.io/bot-photo/images/{i[0]}.png",
+        thumbnail_url=f"https://daniil1235.github.io/magazin/images/{i[0]}.png",
         input_message_content=types.InputTextMessageContent(
-            message_text=f"/add {i[0]}")))
+            message_text=f"/add {i[0]} {i[1]}")))
 
 import abcd
 import callback
@@ -29,13 +29,16 @@ import strings
 
 @bot.message_handler(commands=["start"])
 def start(message: types.Message):
+    bot.delete_message(message.chat.id, message.message_id)
+
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     connection.commit()
     cursor.execute("""CREATE TABLE IF NOT EXISTS users 
                       (id TEXT, 
                       sum INTEGER,
-                      cart TEXT)""")
+                      cart TEXT,
+                      priv INTEGER)""")
 
     cursor.execute("""CREATE TABLE IF NOT EXISTS items 
                       (id INTEGER PRIMARY KEY, 
@@ -83,16 +86,19 @@ def addd(message):
 
 @bot.message_handler(commands=["shop"])
 def shopp(message):
+    bot.delete_message(message.chat.id, message.message_id)
     shop.m(message)
 
 
 @bot.message_handler(commands=["cart"])
 def cartt(message):
+    bot.delete_message(message.chat.id, message.message_id)
     cart.m(message)
 
 
-@bot.message_handler(commands=["sum"])
+@bot.message_handler(commands=["balance"])
 def sum(message: types.Message):
+    bot.delete_message(message.chat.id, message.message_id)
     connection = sqlite3.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(f"SELECT sum FROM users WHERE id = {message.from_user.id}")
