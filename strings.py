@@ -19,7 +19,14 @@ your_sum = "ваш счёт: "
 wait = "сейчас к вам подойдут"
 want = " хочет пополнить счёт"
 amount = "В наличии:"
+no_amount = "этого товара нет в наличии"
 price = "Цена:"
+select_user = "Выбрать пользователя"
+admin_error = "викхтар тебе!"
+enter_sum = "введите сумму"
+success = "успешно"
+get_money = "вы получили "
+get_money2 = " рублей!"
 
 
 class Button:

@@ -4,20 +4,27 @@ import sqlite3
 import strings
 
 bot = TeleBot(config.BOT_TOKEN)
-
 results = []
-connection = sqlite3.connect("database.db")
-cursor = connection.cursor()
-cursor.execute("SELECT * FROM items")
-items = cursor.fetchall()
-for i in items:
-    results.append(types.InlineQueryResultArticle(
-        id=f'{i[0]}', title=f"{i[1]}",
-        description=f"{strings.amount} {i[2]}\n"
-                    f"{strings.price} {i[3]}",
-        thumbnail_url=f"https://daniil1235.github.io/magazin/images/{i[0]}.png",
-        input_message_content=types.InputTextMessageContent(
-            message_text=f"/add {i[0]} {i[1]}")))
+
+
+def inlineupdate():
+    global results
+    results = []
+    connection = sqlite3.connect("database.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM items")
+    items = cursor.fetchall()
+    for i in items:
+        results.append(types.InlineQueryResultArticle(
+            id=f'{i[0]}', title=f"{i[1]}",
+            description=f"{strings.amount} {i[2]}\n"
+                        f"{strings.price} {i[3]}",
+            thumbnail_url=f"https://daniil1235.github.io/funmagazin/images/{i[0]}.jpg",
+            input_message_content=types.InputTextMessageContent(
+                message_text=f"/add {i[0]} {i[1]}")))
+
+
+inlineupdate()
 
 import abcd
 import callback
@@ -106,6 +113,19 @@ def sum(message: types.Message):
     markup = types.InlineKeyboardMarkup()
     markup.add(types.InlineKeyboardButton(strings.Button.get_sum, callback_data=f"getsum {message.from_user.first_name}"))
     bot.send_message(message.chat.id, strings.your_sum + sum, reply_markup=markup)
+
+
+@bot.message_handler(commands=["give"])
+def give(message: types.Message):
+    bot.delete_message(message.chat.id, message.message_id)
+    connection = sqlite3.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT id FROM users")
+    ids = cursor.fetchall()
+    markup = types.InlineKeyboardMarkup()
+    for i in ids:
+        markup.add(types.InlineKeyboardButton(i[0], callback_data=f"give {i[0]} {message.from_user.id}"))
+    bot.send_message(message.chat.id, strings.select_user, reply_markup=markup)
 
 
 @bot.inline_handler(func=lambda query: True)
