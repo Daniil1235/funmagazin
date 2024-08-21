@@ -130,10 +130,10 @@ def m(callback: types.CallbackQuery):
         cursor.execute(f"SELECT sum FROM users WHERE id={callback.message.chat.id}")
         sum = cursor.fetchone()[0]
         sum = int(sum)
-        if sum < 15:
+        if sum < 20:
             bot.send_message(callback.message.chat.id, strings.money_error)
             return
-        cursor.execute(f"UPDATE users SET sum = {sum - 15} WHERE id={callback.message.chat.id}")
+        cursor.execute(f"UPDATE users SET sum = {sum - 20} WHERE id={callback.message.chat.id}")
         cart = eval(callback.data.replace("courier ", ""))
         s = strings.order_list_courier + callback.message.chat.first_name + ": \n"
         for i in cart:
