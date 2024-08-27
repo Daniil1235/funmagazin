@@ -80,7 +80,7 @@ def m(callback: types.CallbackQuery):
                 sum -= price
                 cursor.execute(f'UPDATE users SET sum="{sum}" WHERE id="{callback.message.chat.id}"')
                 cursor.execute(f"SELECT amount FROM items WHERE id={text}")
-                cursor.execute(f"UPDATE items SET amount ={amount - 1}")
+                cursor.execute(f"UPDATE items SET amount ={amount - 1} WHERE id={text}")
             else:
                 bot.send_message(callback.message.chat.id, strings.money_error)
         except KeyboardInterrupt:
